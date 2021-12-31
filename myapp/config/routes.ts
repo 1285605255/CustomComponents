@@ -50,6 +50,11 @@
     component: './UploadModel',
   },
   {
+    name: 'AMap',
+    path: '/AMap',
+    component: './AMap',
+  },
+  {
     path: '/UploadModel/ViewVideo',
     name: 'ViewVideo',
     component: './UploadModel/components/ViewVideo',
