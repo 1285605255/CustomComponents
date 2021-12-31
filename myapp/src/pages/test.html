@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>egg_test</title>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+
+
+</body>
+<script>
+  axios.get('http://192.168.31.118:7001', {
+      /* http://127.0.0.1:7001/list */
+      header: {
+        'Access-Control-Allow-Origin': '*'
+      }
+    })
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+
+</script>
+
+</html>
