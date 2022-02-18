@@ -16,8 +16,8 @@ const UploadVideo: React.FC = () => {
     multiple: true,
     listType: 'picture',
     accept: '.jpeg ,.jpg ,.png,.pdf,.docx,.mp4,.mp3,.xls,.doc,.xlsx',
-    action: '/api/parse/video/upload/',
-    // action: 'api/streamVideo',
+    // action: '/api/parse/video/upload/',
+    action: 'api/streamVideo',
     onChange(info: any) {
       const { status } = info.file;
       if (status === 'done') {
@@ -46,9 +46,12 @@ const UploadVideo: React.FC = () => {
           break;
         default:
           break;
-      }
+      }  
     },
   };
+  useEffect(()=>{
+    request(' ')
+  },[])
 
   return (
     <div>

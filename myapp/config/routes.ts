@@ -24,22 +24,6 @@
     component: './Welcome',
   },
   {
-    path: '/admin',
-    name: 'admin',
-    access: 'canAdmin',
-    component: './Admin',
-    routes: [
-      {
-        path: '/admin/sub-page',
-        name: 'sub-page',
-        component: './Welcome',
-      },
-      {
-        component: './404',
-      },
-    ],
-  },
-  {
     name: 'list.table-list',
     path: '/list',
     component: './TableList',
@@ -55,10 +39,20 @@
     component: './AMap',
   },
   {
-    path: '/UploadModel/ViewVideo',
     name: 'ViewVideo',
+    path: '/UploadModel/ViewVideo',
     component: './UploadModel/components/ViewVideo',
     hideInMenu: true,
+  },
+  {
+    name: 'EditableProTable',
+    path: '/EditableProTable',
+    component: './EditableProTable',
+  },
+  {
+    name: '3D模块',
+    path: '/3DModel',
+    component: './3DModel',
   },
   {
     path: '/',

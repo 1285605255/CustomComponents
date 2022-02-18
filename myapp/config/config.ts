@@ -47,8 +47,9 @@ export default defineConfig({
   ignoreMomentLocale: true,
   proxy: {
     '/api': {
-      // target: 'http://127.0.0.1:7001', // 后台服务
-      target: 'http://192.168.50.200:8000', // 家辉后台服务
+      target: 'http://127.0.0.1:7001', // 后台服务
+      // target: 'http://192.168.50.200:8000', // 家辉后台服务
+      // target: 'http://192.168.50.99:8003/api', // 杨婷后台服务
       ws: true, // websoket 服务
       changeOrigin: true, //是否跨域
       pathRewrite: { '/api': '' },
@@ -76,4 +77,5 @@ export default defineConfig({
   nodeModulesTransform: { type: 'none' },
   // mfsu: {},
   exportStatic: {},
+  runtimePublicPath:true,
 });

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>My first three.js app</title>
+  <style>
+    body {
+      margin: 0;
+    }
+
+  </style>
+</head>
+
+<body>
+  <script src="https://cdn.bootcdn.net/ajax/libs/three.js/r128/three.js"></script>
+  <script src="d:/3D/node_modules/@three-ts/orbit-controls/dist/index"></script>
+  <script type="module">
+    const clock = new THREE.Clock();
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+    const renderer = new THREE.WebGLRenderer({
+      antialias: true
+    });
+
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+
+    let AeroSphere = {
+      uniforms: {
+        globeTexture: {
+          value: new THREE.TextureLoader().load('./global.jpg'),
+        },
+        time: {
+          value: 0,
+        },
+      },
+      vertexShader: [
+        'varying vec2 vUv;',
+        'varying vec3 vertexNormal;',
+        'void main(){',
+        'vUv = uv;',
+        'vertexNormal = normalize(normalMatrix * normal);', //将法线转换到视图坐标系中
+        'gl_Position	= projectionMatrix * modelViewMatrix * vec4(position, 1);',// 计算顶点着色器中顶点的位置
+        '}',
+      ].join('\n'),
+      fragmentShader: [
+        'uniform sampler2D globeTexture;',
+        'varying vec2 vUv;',
+        'varying vec3 vertexNormal;',
+        'void main(){',
+        'float intensity = 1.05 -dot(vertexNormal,vec3(0.0,0.0,1.0));',
+        'vec3 atmosphere = vec3(0.3 , 0.6 , 1.0) * pow(intensity,1.5);',
+        '	gl_FragColor = vec4(atmosphere + texture2D(globeTexture,vUv).xyz,1.0);',
+        '}',
+      ].join('\n'),
+    };
+    let Atmosphere = {
+      uniforms: {
+        time: {
+          value: 0,
+        },
+      },
+      vertexShader: [
+        'varying vec3 vertexNormal;',
+        'varying vec2 depthUv;',
+        'void main(){',
+        'vertexNormal = normalize(normalMatrix * normal);', //将法线转换到视图坐标系中
+        'gl_Position	= projectionMatrix * modelViewMatrix * vec4(position, 1.0);',// 计算顶点着色器中顶点的位置
+        'depthUv = gl_Position.xy/1.0 + 0.5;',
+        '}',
+      ].join('\n'),
+      fragmentShader: [
+        'varying vec3 vertexNormal;',
+        'varying vec2 depthUv;',
+        'uniform float time;',
+        'void main(){',
+        'float step = abs(time - depthUv.x);',
+        'if(step < 0.02){',
+        'float d =  (1.0 - step * 50.0);',
+        '}',
+        'float intensity = pow(0.5 - dot(vertexNormal, vec3(0.3 ,1 , 1)) ,0.5);',
+        '	gl_FragColor = vec4(0.3, 0.6 , 1.0  , 1.0) * intensity;',
+        '}',
+      ].join('\n'),
+    };
+    const sphere = new THREE.Mesh(new THREE.SphereGeometry(5, 50, 50), new THREE.ShaderMaterial({
+      vertexShader: AeroSphere.vertexShader,
+      fragmentShader: AeroSphere.fragmentShader,
+      uniforms: AeroSphere.uniforms,
+    }))
+    const atmosphere = new THREE.Mesh(new THREE.SphereGeometry(5, 50, 50), new THREE.ShaderMaterial({
+      vertexShader: Atmosphere.vertexShader,
+      fragmentShader: Atmosphere.fragmentShader,
+      uniforms: Atmosphere.uniforms,
+      blending: THREE.AdditiveBlending,
+      side: THREE.BackSide
+    }))
+    atmosphere.scale.set(1.1, 1.1, 1.1)
+    scene.add(sphere)
+    scene.add(atmosphere)
+    camera.position.z = 12
+
+    const animate = function () {
+      requestAnimationFrame(animate);
+      renderer.render(scene, camera);
+      sphere.rotation.y += 0.005
+      const delta = clock.getDelta();
+      const time = (clock.getElapsedTime() / 5) % 1;
+      if (AeroSphere.uniforms) {
+        Atmosphere.uniforms.time.value = time;
+      }
+    };
+
+    animate();
+
+  </script>
+</body>
+
+</html>

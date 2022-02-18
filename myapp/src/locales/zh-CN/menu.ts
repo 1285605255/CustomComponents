@@ -3,6 +3,7 @@ export default {
   'menu.UploadModel': '上传模块',
   'menu.ViewVideo': '上传模块',
   'menu.AMap': '地图模块',
+  'menu.EditableProTable': '可编辑表格',
   'menu.more-blocks': '更多区块',
   'menu.home': '首页',
   'menu.admin': '管理页',
